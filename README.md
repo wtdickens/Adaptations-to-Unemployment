@@ -1,4 +1,5 @@
 # Adaptations-to-Unemployment
+
 This repository holds programs and notes for Dickens, Triest and Sederberg's 
 work on savings and consumption when faced with an income shock
 
@@ -24,3 +25,4 @@ each wealth levels are computed. Those utility values are then used to compute
 the optimal consumption in period T-1 for each of the NK possible states in
 period T-1. These values, in turn, are used to compute the optimal choice
 in period T-2 and so on back to period 0. 
+
