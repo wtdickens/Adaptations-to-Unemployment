@@ -24,7 +24,7 @@ class People:
     # period of life.
     
     def __init__(self,crra=.9,education=12,sex="m",age=18,
-                 experience=-9,MonthsUnemployed=0):
+                 experience=-9,MonthsUnemployed=0,StartingWealth=-9):
         
         # Create attributes for each incidence of the class
         #   crra is coefficient of relative risk aversion, 
@@ -38,6 +38,8 @@ class People:
         else:
             self.experince=experience
         self.MonthsUnemployed=MonthsUnemployed
+        if StartingWealth < 0:
+            StartingWealth=(age-18)*
         
         # Now call function to create matrix of possible permanent income 
         #   values in each period as an Nx(Retirement_Age-Age) matrix
