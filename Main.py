@@ -5,16 +5,16 @@
 """
 # IMPORTS
 import numpy as np
-import Compute_Permanent_Y
-import Compute_Wealth_Values.py
+import Compute_Permanent_Y as CPY
+import Compute_Wealth_Values as CWV
 
-# Global Variables
+# "Global" Variables
 
-Years_of_Retirement= 20
+Years_of_Retirement= 20   # What it says
 N=2    # Number of values taken by permanent income each period
 K=5    # Number of possible values for wealth in each period 
        #    Note: K can never be less than 5 for Compute_Wealth_Values to work 
-Retirement_Age=67 # Assumed retirement age for all individuals
+RetirementAge=67 # Assumed retirement age for all individuals
 RealRate=.02      # Real rate of return on savings
 
 # Classes
@@ -36,10 +36,11 @@ class People:
         #   experience is years of work experience
         #   FulltimeY is the most recent full time annual income
         #   others are self explanitory
-        self.crra=crra
-        self.education
-        self.age=age
-        self.MonthsUnemployed=MonthsUnemployed
+        self.crra = crra
+        self.education = education
+        self.sex = sex
+        self.age = age
+        self.MonthsUnemployed = MonthsUnemployed
         
         if experience < 0:
             self.experience=age-education
@@ -66,28 +67,32 @@ class People:
         
         # Now call function to create matrix of possible permanent income 
         #   values in each period as an Nx(Retirement_Age-Age) matrix
-        self.PermYMat=Compute_Permanent_Y(self.age,
+        self.PermYMat=CPY.Compute_Permanent_Y(self.age,
                                           self.education,
                                           self.experience,
                                           self.MonthsUnemployed,
                                           self.sex,
-                                          self.FulltimeY)
+                                          self.FulltimeY,
+                                          RetirementAge)
         
         # Finally call function to compute matrix of possible values of 
         #  wealth in each remaining period of life
-        self.WealthMat=Compute_Wealth_Values(self.PermYmat,
+        self.WealthMat=CWV.Compute_Wealth_Values(self.PermYMat,
                                              StartingWealth,
-                                             67-age)
+                                             RetirementAge-age,
+                                             K,
+                                             RealRate)
         
         
 ###############################################################
 # Now test Period_T_Utility.py
 
-import Period_T_Utility.py
+import Period_T_Utility as PTU
 
 person1=People()
 
-Period_T_Utility(person1)
+UtilityVec = PTU.Period_T_Utility(person1,Years_of_Retirement)
+print(UtilityVec)
 
         
         

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-def Compute_Wealth_Values(IncomeMatrix, StartingWealth, YearsLeft):
+import numpy as np
+def Compute_Wealth_Values(IncomeMatrix, StartingWealth, YearsLeft,K,RealRate):
     """
     This routine takes a person's starting wealth and their income matrix
     and computes possible values for wealth in each remaining year of their
@@ -14,6 +15,10 @@ def Compute_Wealth_Values(IncomeMatrix, StartingWealth, YearsLeft):
         The value of the persons wealth at the start of the first period
     YearsLeft: integer
         Years left in person's working life
+    K : integer
+        Number of possible wealth values in each period
+    RealRate : floating point
+        The real return on savings
         
     Returns
     -------
@@ -31,16 +36,21 @@ def Compute_Wealth_Values(IncomeMatrix, StartingWealth, YearsLeft):
     # Equal to the median income for the entire lifetime. It assigns that 
     # value in each period to the median and then computes the  the other
     # values as an exponential function centered at the median value
-    
-    if IncomeMatrix.size[0] % 2 == 1:
-        MedIndex = IncomeMatrix.size[0] / 2 + .5
+    if IncomeMatrix.shape[0] % 2 == 1:
+        print("wrong place")
+        MedIndex = IncomeMatrix.shape[0] / 2 - .5
         MeanInc = np.mean(IncomeMatrix[MedIndex,:])
     else:
-        MedIndex=IncomeMatrix.size[0] / 2 
-        MeanInc=np.mean(IncomeMatrix[MedIndex:MedIndex+1,:])
+        print("right place")
+        MedIndex=np.int(IncomeMatrix.shape[0] / 2) 
+        MeanInc=np.mean(IncomeMatrix[MedIndex-1:MedIndex+1,:])
+    
+    print(np.mean(IncomeMatrix[MedIndex-1:MedIndex+1,:]))
+    print(IncomeMatrix.shape[0])
+    print(MeanInc)
    
     # Create numpy matrix to store results (K is a global variable)    
-    WealthMat=np.matrix(np.zeros(K,YearsLeft))
+    WealthMat=np.matrix(np.zeros((K,YearsLeft)))
     
     # Compute the index of the row(s) to place the optimal value in
     if K % 2 == 1:
@@ -55,8 +65,8 @@ def Compute_Wealth_Values(IncomeMatrix, StartingWealth, YearsLeft):
         
         for j in range(K):
             Increment = OptW / (OptIndex - 2)
-            WealthMat[i,year] = (i - 1) * increment 
-        
+            WealthMat[j,year] = (j - 1) * Increment 
+    
     return(WealthMat)
             
         

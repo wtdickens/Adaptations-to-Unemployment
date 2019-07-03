@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y):
+import numpy as np
+def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y,RetirementAge):
     """
     Takes age, years of education, years of job experience, months of 
     unemployment, sex and Fulltime income to compute a matrix of possible
@@ -20,6 +21,8 @@ def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y):
         m for male, f for female
     Y : integer
         Fulltime equivalent annual income
+    RetirementAge : integer
+        Retirement age in years
 
     Returns
     -------
@@ -35,10 +38,10 @@ def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y):
     # For now this progrm creates a 2x(67-age) matrix with $60,000 in the upper
     # row and 0 in the lower row
     
-    PYMat=np.mat(np.zeros((2,67-age)))
-    for i in range(67-age):
-        PYMat[0,i]=60000
-        PYMat[1,i]=0
+    PYMat=np.mat(np.zeros((2,RetirementAge - age)))
+    for i in range(RetirementAge - age):
+        PYMat[1,i]=60000
+        PYMat[0,i]=0
     
     return(PYMat)
         
