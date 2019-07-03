@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y)
+def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y):
     """
     Takes age, years of education, years of job experience, months of 
     unemployment, sex and Fulltime income to compute a matrix of possible

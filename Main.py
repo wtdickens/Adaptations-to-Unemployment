@@ -5,7 +5,7 @@
 """
 # IMPORTS
 import numpy as np
-import Compute_Permanent_Y.py
+import Compute_Permanent_Y
 import Compute_Wealth_Values.py
 
 # Global Variables
@@ -58,8 +58,8 @@ class People:
             #  of .16 which is optimal with no risk and RealRate of 2
             #  if people work for 50 years, are retired for 20 and can
             #  purchase a fair anuity on retirement
-            self.StartingWealth=.16*FulltimeY*.(np.exp(RealRate*(age-18))-1)
-                                /RealRate
+            self.StartingWealth=(.16*FulltimeY*(np.exp(RealRate*(age-18))-1)
+                                 /RealRate)
         else:
             self.StartingWealth=StartingWealth
         
