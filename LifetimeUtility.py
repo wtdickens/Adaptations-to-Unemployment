@@ -1,9 +1,9 @@
 """
-    This set of routines takes as input a function that relates current wealth and
-    permanent income to savings in each year of life and returns total discounted 
-    lifetime utility. It calls a function IncomeProcess that is defined outside
-    the program that gives actual income in each period of life as a function of
-    starting permanent income and age. 
+    This set of routines takes as input a function that relates current wealth
+    and permanent income to savings in each year of life and returns total 
+    discounted lifetime utility. It calls a function IncomeProcess that is 
+    defined outside the program that gives actual income in each period of life 
+    as a function of starting permanent income and age. 
 
     (Input) StartAge  -- Starting age of person in years
             Discount  -- The discount rate to be used  to compute utility
@@ -19,7 +19,8 @@
     (Returns)   LifetimeUtil     -- Total discounted lifetime utility
 """
 
-def LiftimeUtility(StartAge,Discount,StartPY,StartW,FinalPD,IncomeProcess,Savings):
+def LiftimeUtility(StartAge,Discount,StartPY,StartW,
+                   FinalPD,IncomeProcess,Savings):
     
 
 

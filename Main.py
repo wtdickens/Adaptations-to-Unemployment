@@ -12,7 +12,8 @@ import Compute_Wealth_Values.py
 
 Years_of_Retirement= 20
 N=2    # Number of values taken by permanent income each period
-K=5    # Number of possible values for wealth in each period
+K=5    # Number of possible values for wealth in each period 
+       #    Note: K can never be less than 5 for Compute_Wealth_Values to work 
 Retirement_Age=67 # Assumed retirement age for all individuals
 RealRate=.02      # Real rate of return on savings
 
@@ -74,7 +75,9 @@ class People:
         
         # Finally call function to compute matrix of possible values of 
         #  wealth in each remaining period of life
-        self.WealthMat=Compute_Wealth_Values(self.PermYmat)
+        self.WealthMat=Compute_Wealth_Values(self.PermYmat,
+                                             StartingWealth,
+                                             67-age)
         
         
 ###############################################################
