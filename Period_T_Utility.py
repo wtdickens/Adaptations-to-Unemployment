@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-def Period_T_Utility(Person)
+import numpy as np
+def Period_T_Utility(Person,Years_of_Retirement):
     """
     
     This routine computes final period utility for each possible state
@@ -23,14 +24,13 @@ def Period_T_Utility(Person)
     @author: wtdickens
     """
     # Create matrix to store utility values for each final wealth state
-    Utility_Vector=np.matrix(np.zeros((Person.WinT.size[0],1))
-    
-   
-    for i in range(Person.WinT.size[0]):
-        Utility_Vector[i,1]= Years_of_Retirement*((Person.WinT[i,1]
-                            /Years_of_retirement)**(1-Person.crra)-1)
-                            /(1-Person.crra)
-    
+    Utility_Vector=np.matrix(np.zeros((Person.WealthMat.shape[0],1)))
+
+    for i in range(Person.WealthMat.shape[0]):
+        Utility_Vector[i,0]= (Years_of_Retirement*((Person.WealthMat[i,-1]
+                            /Years_of_Retirement)**(1-Person.crra)-1)
+                            /(1-Person.crra))
+    np.set_printoptions(precision=5)
     return(Utility_Vector)
         
     
