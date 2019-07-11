@@ -2,16 +2,19 @@
 import numpy as np
 def Period_T_Utility(Person,Years_of_Retirement):
     """
-    
     This routine computes final period utility for each possible state
     of wealth in the last period
     
     Parameters
     ----------
-    Person : An element of the class People 
+    Person : An instance of the class People 
+           See Main.py for definition of the class
            Specifically, this program uses the attributes: 
                coefficient of relative risk aversion  (crra)
                Kx1 np matrix of possible wealth values in period T (WinT)
+    Years_Of_Retirement : integer
+           The number of years for which the person will be retired which
+           is assumed known.
    
     Returns
     -------
