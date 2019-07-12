@@ -8,7 +8,7 @@ import numpy as np
 import Compute_Permanent_Y as CPY
 import Compute_Wealth_Values as CWV
 
-# "Global" Variables
+# "Global" Variables (parameters of the simulation)
 
 Years_of_Retirement= 20   # What it says
 N=2    # Number of values taken by permanent income each period
@@ -93,14 +93,17 @@ class People:
         
         
 ###############################################################
-# Now test Period_T_Utility.py
+# Now test ChooseSavings.py
 
-import Period_T_Utility as PTU
+from ChooseSavings import ChooseSavings as ChooseSavings
 
 person1=People()
 
-UtilityVec = PTU.Period_T_Utility(person1,Years_of_Retirement)
-print(UtilityVec)
+SavingsRate,Savings,ELifetimeUtility=ChooseSavings(Person1,
+                                                   RetirementAge,
+                                                   RealRate,
+                                                   Years_of_Retirement,
+                                                   NumberYDraws)
 
         
         
