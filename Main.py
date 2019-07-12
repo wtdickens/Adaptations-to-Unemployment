@@ -91,6 +91,9 @@ class People:
                                              K,
                                              RealRate)
         
+        self.PYTransMatrix=CompTransMat(self,self.age,self.education,
+                                        RetirementAge)
+        
         
 ###############################################################
 # Now test ChooseSavings.py
