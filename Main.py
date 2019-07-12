@@ -16,6 +16,8 @@ K=5    # Number of possible values for wealth in each period
        #    Note: K can never be less than 5 for Compute_Wealth_Values to work 
 RetirementAge=67 # Assumed retirement age for all individuals
 RealRate=.02      # Real rate of return on savings
+NumberYDraws =    # Number of draws for Monte Carlo integration of Income
+                  #  per year per state divided by 2
 
 # Classes
 
@@ -26,15 +28,16 @@ class People:
     # possible values for permanent income and wealth in each remaining
     # period of life.
     
-    def __init__(self,crra=.9,education=12,sex="m",age=18,
+    def __init__(self,crra=25,education=12,sex="m",age=18,
                  experience=-9,MonthsUnemployed=0,StartingWealth=-9
-                 ,FulltimeY=-9):
+                 ,FulltimeY=-9,Y=-9):
         
         # Create attributes for each incidence of the class
         #   crra is coefficient of relative risk aversion, 
         #   education is years completed
         #   experience is years of work experience
         #   FulltimeY is the most recent full time annual income
+        #   Y is income for most recent period
         #   others are self explanitory
         self.crra = crra
         self.education = education
@@ -54,6 +57,11 @@ class People:
             self.FulltimeY=60000*np.exp(.07*(education-12))
         else:
             self.FulltimeY=FulltimeY
+            
+        if Y<0:
+            self.Y=60000*np.exp(.07*(education-12))
+        else:
+            self.Y=Y
             
         if StartingWealth < 0:
             # If no starting wealth assume constant Y and savings rate
