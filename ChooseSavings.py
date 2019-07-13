@@ -28,11 +28,11 @@ def ChooseSavings(Person,RetirementAge,RealRate,Years_of_Retirement,
        
     Returns
     -------
-    SavingsRate: floating point
+    SavingsRate : floating point
        The optimal fraction of available resources "saved"
-    Savings: floating point
+    Savings : floating point
        The optimal dolar value of savings
-    LEU: floating point
+    LEU : floating point
        Lifetime Expected Utiliity given optimal savings in most recent period 
     
 Created on Thu Jul 11 12:00:49 2019
@@ -71,18 +71,20 @@ Created on Thu Jul 11 12:00:49 2019
                 for sign in [-1,1]:
                     YearFlag=1  # Setting for final year of work
                     # Compute optimal consumption given state
-                    UtilSum+=ComputeOptimalC(
-                                          Person.WealthMat[iw,RetirementAge-1],
-                                          Person.PermYMat[ipy,RetirementAge-1],
-                                          RandomY[ir]*sign,
-                                          FinalPeriodUtilityVector,
-                                          YearFlag)               
+                    UtilSum+=ComputeOptimalC(Person,
+                                             RealRate,
+                                             RandomY[ir]*sign,
+                                             FinalPeriodUtilityVector,
+                                             YearFlag)               
             # Average Utility over all Monte-Carlo draws (2*NumberYDraws)
             # and store in CPU matrix
             CurrentPeriodUtility[ipy,iw]=.5*UtilSum/NumberYDraws
+        
+        # Set lastPeriodUtility equal to Current Period Utility for next iter
+        NextPeriodUtility=CurrentPeriodUtility
             
     # Now loop backwards over lifetime to get to current period
-    for year in range(RetirementAge-2,Person.Age,-1):
+    for year in range(RetirementAge-2,Person.Age,-1):   
         for ipy in range(NPY):
             for iw in range(NW):
                 # Draw random terms for integration over income innovation
@@ -100,24 +102,23 @@ Created on Thu Jul 11 12:00:49 2019
                         # and last 
                         YearFlag=0
                         # Compute optimal consumption given state
-                       UtilSum+=ComputeOptimalC(
-                                          Person.WealthMat[iw,RetirementAge-1],
-                                          Person.PermYMat[ipy,RetirementAge-1],
-                                          RandomY[ir]*sign,
-                                          LastPeriodUtilityMatrix,
-                                          YearFlag)
+                       UtilSum+=ComputeOptimalC(Person,
+                                                RealRate
+                                                RandomY[ir]*sign,
+                                                NextPeriodUtility,
+                                                YearFlag)
                 # Average Utility over all Monte-Carlo draws (2^NumberYDraws)
                 # and store in CPU matrix
                 CurrentPeriodUtility[ipy,iw]=.5*UtilSum/NumberYDraws
                 
+        # Set lastPeriodUtility equal to Current Period Utility for next iter
+        NextPeriodUtility=CurrentPeriodUtility
+                
     # Now compute consumption for current year
     YearFlag=-1 # Set year flag to indicate computation for current year
-    OptC,LEU=ComputeOptimalC(Person.StartingWealth,
-                             Person.Y,
-                             0,
-                             LastPeriodUtilityMatrix,
-                             YearFlag)
-
+    OptC,LEU=ComputeOptimalC(Person,RealRate,0,NextPeriodUtility,YearFlag)
+    
+    # Compute returns and finish                        
     Resources=Person.StartingWealth+Person.Y  # Total available resources
     Savings=Resources-OptC              
     SavingsRate=1-OptC/Resources
