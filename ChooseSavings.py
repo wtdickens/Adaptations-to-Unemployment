@@ -6,8 +6,7 @@ def ChooseSavings(Person,RetirementAge,RealRate,Years_of_Retirement,
     savings rate for the most recent year of that person's life as a function
     of their current wealth, their current permanent income, and 
     characteristics that might affect their future earnings and utility of
-    income. It solves the lifetime utility maximization problem by backward
-    induction computing the optimal behavior for each state and then 
+    income. 
     
     Parameters
     ----------
@@ -42,7 +41,7 @@ Created on Thu Jul 11 12:00:49 2019
 """
     import numpy as np
     from Period_T_Utililty import Period_T_Utility as Period_T_Utility
-    from Backward_Optimize import Backward_Optimize as Backward_Optimize
+    from CompOptimalC import CompOptimalC as CompOptimalC
 
     # Call routine to compute the utility consumption in retirement 
     #  corresponding to each possible level of wealth going into retirement
@@ -65,22 +64,19 @@ Created on Thu Jul 11 12:00:49 2019
             for ir in range(NumberYDraws):
                 # Reflect each random draw to the opposite side of the mean
                 # for M-C integration accelerator
-                ####### {NOTE: May not need to do M-C integration here. If we 
+                # {NOTE: May not need to do M-C integration here. If we 
                 # specify C(Y) function we may be able to integrate using
                 # simple multi-point quadrature as there are small values
                 # that work well for exponential type distributions}
                 for sign in [-1,1]:
                     YearFlag=1  # Setting for final year of work
                     # Compute optimal consumption given state
-                    OptC,LastPeriodUtility=ComputeOptimalC(
+                    UtilSum+=ComputeOptimalC(
                                           Person.WealthMat[iw,RetirementAge-1],
                                           Person.PermYMat[ipy,RetirementAge-1],
                                           RandomY[ir]*sign,
                                           FinalPeriodUtilityVector,
-                                          YearFlag)
-                    ######### (NOTE: This needs to be augmented with the
-                    # Utility from the likely states in next period)
-                    UtilSum+=(OptC**(1-Person.crra)-1)/(1-Person.crra)
+                                          YearFlag)               
             # Average Utility over all Monte-Carlo draws (2*NumberYDraws)
             # and store in CPU matrix
             CurrentPeriodUtility[ipy,iw]=.5*UtilSum/NumberYDraws
@@ -104,14 +100,12 @@ Created on Thu Jul 11 12:00:49 2019
                         # and last 
                         YearFlag=0
                         # Compute optimal consumption given state
-                        OptC,LastPeriodUtilityMatrix=ComputeOptimalC(
+                       UtilSum+=ComputeOptimalC(
                                           Person.WealthMat[iw,RetirementAge-1],
                                           Person.PermYMat[ipy,RetirementAge-1],
                                           RandomY[ir]*sign,
                                           LastPeriodUtilityMatrix,
                                           YearFlag)
-                        
-                        UtilSum+=(OptC**(1-Person.crra)-1)/(1-Person.crra)
                 # Average Utility over all Monte-Carlo draws (2^NumberYDraws)
                 # and store in CPU matrix
                 CurrentPeriodUtility[ipy,iw]=.5*UtilSum/NumberYDraws
