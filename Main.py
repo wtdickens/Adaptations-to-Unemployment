@@ -1,5 +1,6 @@
 """
-    Main program for Dickens, Triest and Sederberg's work on the impact of income shocks on well being
+    Main program for Dickens, Triest and Sederberg's work on the impact of 
+    income shocks on well being
    
     For now this is a test bed for testing routines
 """
@@ -15,7 +16,6 @@ Years_of_Retirement= 20   # What it says
 N=2    # Number of values taken by permanent income each period
 K=5    # Number of possible values for wealth in each period 
        #    Note: K can never be less than 5 for Compute_Wealth_Values to work 
-RetirementAge = 67  # Assumed retirement age for all individuals
 RealRate = .02      # Real rate of return on savings
 NumberYDraws = 3    # Number of draws for Monte Carlo integration of Income
                     #  per year per state divided by 2
@@ -24,14 +24,15 @@ NumberYDraws = 3    # Number of draws for Monte Carlo integration of Income
 
 class People:
     # This class' initialization takes a person's crra, age, education, sex, 
-    # work experience, most recent full time annual income and recent 
-    # employment history, to computes the 
+    # work experience, most recent full time annual income, recent 
+    # employment history, and wealth to computes the 
     # possible values for permanent income and wealth in each remaining
-    # period of life.
+    # period of life. It also computes the Markov transition matrix
+    # for the evolution of permanent income over the working life
     
     def __init__(self,crra=25,education=12,sex="m",age=18,
                  experience=-9,MonthsUnemployed=0,StartingWealth=-9
-                 ,FulltimeY=-9,Y=-9,YSD=.1):
+                 ,FulltimeY=-9,Y=-9,YSD=.1,RetirementAge=67):
         
         # Create attributes for each incidence of the class
         #   crra is coefficient of relative risk aversion, 
@@ -46,12 +47,13 @@ class People:
         self.sex = sex
         self.age = age
         self.MonthsUnemployed = MonthsUnemployed
-        self.YSD=YSD
+        self.YSD = YSD
+        self.RetirementAge = RetirementAge
         
         if experience < 0:
-            self.experience=age - education
+            self.experience = age - education
         else:
-            self.experience=experience
+            self.experience = experience
         
         if FulltimeY<0:
             # If full time incoe is missing assume that it is $60k times
@@ -109,7 +111,6 @@ from ChooseSavings import ChooseSavings as ChooseSavings
 person1=People()
 
 SavingsRate,Savings,ELifetimeUtility = ChooseSavings(Person1,
-                                                     RetirementAge,
                                                      RealRate,
                                                      Years_of_Retirement,
                                                      NumberYDraws)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def ChooseSavings(Person,RetirementAge,RealRate,Years_of_Retirement,
+def ChooseSavings(Person,RealRate,Years_of_Retirement,
                   NumberYDraws):
     """
     This routine takes the information on a person and computes the optimal
@@ -10,11 +10,9 @@ def ChooseSavings(Person,RetirementAge,RealRate,Years_of_Retirement,
     
     Parameters
     ----------
-    person : an instance of the class people
+    Person : an instance of the class people
        This class contains all the information on the person needed. See
        Main.py where it is defined
-    RetirementAge : Integer
-       Expected age of retirement (assumed to be known)
     RealRate : floating point
        The real rate of return on savings during the person's life. If no 
        credit constraints this is also the expected interest on money 
@@ -56,7 +54,6 @@ def ChooseSavings(Person,RetirementAge,RealRate,Years_of_Retirement,
     
     # Loop over states (PermY x Wealth) and perform Monte Carlo Integration
     # of income innovations to fill in utility(state) matrix
-    LastYearFlag=True    # Flag indicates that comp is for last working year
     for ipy in range(NPY):        # Loop over permament income states
         for iw in range(NW):      # Loop over wealth states
             # Draw random terms for integration over income innovation
@@ -79,7 +76,7 @@ def ChooseSavings(Person,RetirementAge,RealRate,Years_of_Retirement,
                                                RealRate,
                                                RandomY[ir]*sign,
                                                FinalPeriodUtilityVector,
-                                               LastYearFlag)               
+                                               )               
             # Average Utility over all Monte-Carlo draws (2*NumberYDraws)
             # and store in CPU matrix
             CurrentPeriodUtility[ipy,iw] = .5 * UtilSum / NumberYDraws
@@ -88,12 +85,12 @@ def ChooseSavings(Person,RetirementAge,RealRate,Years_of_Retirement,
         NextPeriodUtility=CurrentPeriodUtility
             
     # Now loop backwards over lifetime to get to current period
-    for year in range(RetirementAge - 2,Person.Age,-1):   
+    for year in range(Person.RetirementAge - 2,Person.Age,-1):   
         for ipy in range(NPY):     # Loop over permanent income states
             for iw in range(NW):   # Loop over wealth states
                 # Draw random terms for integration over income innovation
                 # YSD is standard deviation of transient shocks to income
-                RandomY = Person.YSD * np.random.normal(size=NumberYDraws)
+                RandomY = Person.YSD * np.random.normal(size = NumberYDraws)
                 UtilSum = 0  # Create variable to hold sum of utility 
                              # over Monte-Carlo draws
                 for ir in range(NumberYDraws):
