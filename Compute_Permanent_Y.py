@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y,RetirementAge):
+def CompPermY(age,ed,experience,unemployment,sex,Y,RetirementAge):
     """
     Takes age, years of education, years of job experience, months of 
     unemployment, sex and Fulltime income to compute a matrix of possible
@@ -29,6 +29,14 @@ def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y,RetirementAge):
     PYMat : numpy matrix
         Each colulmn of the matrix contains the possible values for permanent 
         income in each remaining year of the person's working life
+    PYTransMat : numpy 3 dimensional array
+        This array has dimensions: 
+        # permanent Y States x # permanent Y States x YearsLeft in Working Life
+        Each 2D slice of this array is the transition matrix between states
+        for that year. 
+        ##########(NOTE: We are going to have to simplify the transition
+        matrix if we are going to avoid having yet another big loop in the 
+        middle of what is already a deep nesting of loops)
 
     Created on Tue Jul  2 18:43:22 2019
 
@@ -43,6 +51,14 @@ def Compute_Permanent_Y(age,ed,experience,unemployment,sex,Y,RetirementAge):
         PYMat[1,i]=60000
         PYMat[0,i]=0
     
-    return(PYMat)
+    # This creates teh transi
+    PYTransMat=np.zeros((2,2,RetirementAge - age))
+    for i in range(RetirementAge - age):
+        PyTransMat[0,0,i]=.1
+        PyTransMat[0,1,i]=.9
+        PyTransMat[1,0,i]=.9
+        PyTransMat[1,1,i]=.1        
+    
+    return(PYMat,PYTransMat)
         
 
