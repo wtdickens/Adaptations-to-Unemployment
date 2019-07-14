@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
+def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility,
+                 LastYearFlag=False):
     """
     The routine takes the utility by state matrix for the next year, and for 
     a specific level of resources available in the year being analyzed 
@@ -32,6 +33,9 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
        each possible end state for the period being analyzed. When analyzing
        the final working year this is a numpy vector containing the utility 
        values associated with each final level of wealth.
+   LastYearFlag : Logical
+       Flag is true if this is the last working year of the person's life.
+       Only passed when it is true. 
   
     Returns
     -------
@@ -52,13 +56,15 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     """
     import numpy as np
     
-    #Useful constants
-    NPY=person.WealthMat.shape[0]  #Number of wealth states
-    
-    # Code for years other than the current period and the last working year
-    if YearFlag == 0:
-        # Loop over the possible permanent income states
-        for iPY in range(NPY):
+
+    # Compute resources available for consumption:
+    #   Wealth+investment earnings
+    #   transient income shock
+    #   Permanent income    
+    Resources = (Person.WealthMat[iw,year]*(1+RealRate)
+                +np.exp(RandomY)+
+                +Person.PermYMat[ipy,year]
+                )
             
     
     

@@ -108,11 +108,11 @@ from ChooseSavings import ChooseSavings as ChooseSavings
 
 person1=People()
 
-SavingsRate,Savings,ELifetimeUtility=ChooseSavings(Person1,
-                                                   RetirementAge,
-                                                   RealRate,
-                                                   Years_of_Retirement,
-                                                   NumberYDraws)
+SavingsRate,Savings,ELifetimeUtility = ChooseSavings(Person1,
+                                                     RetirementAge,
+                                                     RealRate,
+                                                     Years_of_Retirement,
+                                                     NumberYDraws)
 
         
         
