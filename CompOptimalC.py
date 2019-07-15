@@ -80,46 +80,43 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     # The first part of this routime computes the optimal level of savings.
     # Part II computes the expected utiliy associate with that choice.
     # Instead of starting the search for the optimal level of savings in the
-    # middle of possible sates we could have started it at one end or the
+    # middle of possible states we could have started it at one end or the
     # other. Starting close to the current level of savings should save
     # us many function evaluations as the optimal level of wealth is very
     # likely to be close to the current level. 
     
-    # Find point where marginal utility of savings is less than marginal
-    # utility of consumption. Start with first level of savings above
-    # current wealth.   
+    # Find next period wealth category just above current wealth
     indexNextWealth=np.argmax(Person.Wealth[:,year] > CurrentWealth)
     
     # Determine which direction to search for Expected Utility max by
     # comparing marginal utility of consumption vs. marginal utility
     # of savings at indexNextWealth
-    Consumption = Resources - Person.Wealth[indexNextWealth,year]
+    TestConsumption = Resources - Person.Wealth[indexNextWealth,year]
     MarginalUofSavings = SavingsUtility(Person
                                         ,year
                                         ,NextPeriodUtility
                                         ,indexNextWealth
                                         ,ipy):
-    if CompMarginalUtility(Consumption,Person.crra) < MarginalUofSavings:
+    if CompMarginalUtility(TestConsumption,Person.crra) < MarginalUofSavings:
         # If true search forward to higher levels of savings and lower levels
-        # of consumption
+        # of consumption. Person.crra is coef of relative risk aversion.
         MaxFlag = False   # Set flag that indicates utility max not found
         # Loop over wealth states greater than starting value
-        while MaxFlag == False and indexNextWealth < NWealthStates:
-            
+        while MaxFlag == False and indexNextWealth < NWealthStates:         
             LastMarginalUofSavings = MarginalUofSavings
             indexNextWealth += 1
-            Consumption = Resources - Person.Wealth[indexNextWealth,year]
+            TestConsumption = Resources - Person.Wealth[indexNextWealth,year]
             MarginalUofSavings = SavingsUtility(Person
                                                 ,year
                                                 ,NextPeriodUtility
                                                 ,indexNextWealth
                                                 ,ipy)):
-            if (CompMarginalUtilityC(Consumption,Person.crra)
+            if (CompMarginalUtilityC(TestConsumption,Person.crra)
                        >= MarginalUofSavings):
                 # If true, the maximum value of savings is at this level 
                 # or is a mixture of this and next lower level of savings. 
                 # Determine which here.
-                if (CompMarginalUtilityC(Consumption,Person.crra)
+                if (CompMarginalUtilityC(TestConsumption,Person.crra)
                     >= LastMarginalUofSavings):
                     # In this case the optimum is a mixture of this level
                     # of wealth and the last level of wealth. Now compute
@@ -127,10 +124,10 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                     Savings = Resources 
                               - LastMarginalUtilityofSavings 
                               ** (-1 / Person.crra)
-                    # ProbLower is he probability that the next periods savings
-                    # will be the lower of the two adjacent values. The notion
-                    # is that the person is buying a fair lottery between
-                    # the two possible values of wealth
+                    # ProbLower is the probability that the next period's 
+                    # savings will be the lower of the two adjacent values. 
+                    # The notion is that the person is buying a fair lottery 
+                    # between the two possible values of wealth.
                     ProbLower = ((Savings 
                                 - Person.WealthMat[indexNextWealth - 1, year])
                                 / (Person.WealthMat[indexNextWealth, year]
@@ -167,7 +164,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                                                      ,NextPeriodUtility
                                                      ,indexNextWealth-1
                                                      ,ipy)):
-            if (ComputeMarginalUtilityC(Consumption,Persno.crra)
+            if (ComputeMarginalUtilityC(TestConsumption,Persno.crra)
                 < MarginalUofLowerSavings):
                 # If Utility of consumption is less than marginal utility of 
                 # next lower value of savings then savings is set at this level
@@ -177,29 +174,29 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                 #Otherwise we consider next lower wealth catagory
                 LastMarginalUofSavings = MarginalUofSavings
                 indexNextWealth -= 1
-                Consumption = Resources - Person.Wealth[indexNextWealth,year]
+                TestConsumption = Resources - Person.Wealth[indexNextWealth,year]
                 MarginalUofSavings = SavingsUtility(Person
                                                     ,year
                                                     ,NextPeriodUtility
                                                     ,indexNextWealth
                                                     ,ipy
                                                     )
-                if (CompMarginalUtility(Consumption,Person.crra)
+                if (CompMarginalUtility(TestConsumption,Person.crra)
                        < MarginalUofSavings):
                     # If true, the maximum value of savings is at this level 
                     # or is a mixture of this and next higher level of savings. 
                     # Determine which here.
-                    if (CompMarginalUtility(Consumption,Person.crra)
+                    if (CompMarginalUtility(TestConsumption,Person.crra)
                         < LastMarginalUofSavings):
                         # In this case the optimum is a mixture of this and
                         # the next higher level of savings
                         Savings = Resources 
                                   - LastMarginalUtilityofSavings 
                                   ** (-1 / Person.crra)
-                        # ProbLower is he probability that the next periods savings
-                        # will be the lower of the two adjacent values. The notion
-                        # is that the person is buying a fair lottery between
-                        # the two possible values of wealth
+                        # ProbLower is he probability that the next periods 
+                        # savings will be the lower of the two adjacent values. 
+                        # The notion is that the person is buying a fair 
+                        # lottery between the two possible values of wealth
                         ProbLower = ((Savings 
                                 - Person.WealthMat[indexNextWealth - 1, year])
                                 / (Person.WealthMat[indexNextWealth, year]
@@ -231,8 +228,24 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     Utility = (Consumption ** (1 - Person.crra) - 1) / ( 1 - Person.crra)
     # Now add in the expected utililty associated with each possible 
     # value for permanent income in the next period weighted by the 
-    # probability of transition to that value
-    for i in range NPY
+    # probability of transition to that value for the onne or two possible 
+    # values of savings
+    for i in range(NPY):
+        Utility += (NextPeriodUtility[i,indexNextWealth]
+                    * Person.TransMat[ipy,i,year]
+                    * (1 - ProbLower))
+        if ProbLower > 0:
+            Utility += (NextPeriodUtililty[i,indexNextWealth-1]
+                        * Person.TransMat[ipy,i,year]
+                        * ProbLower)
+
+    # If period is other than zero report Expected utility for state and end
+    if year > 0:
+        return(Utililty)
+    # Otherwise return consumption and utility
+    else:
+        return(Resources-Savings,Utility)
+        
                    
         
     
