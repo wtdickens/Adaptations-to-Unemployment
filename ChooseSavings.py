@@ -50,7 +50,7 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
     # catagorie by the number of wealth catagories
     NPY = Person.PermYMat.shape[0]  # Number of permanent income states
     NW = Person.WealthMat.shape][0] # Number of wealth states
-    CurrentPeriodUtility = np.matrix(np.zeros((NPY,NW)))
+    CurrentPeriodUMat = np.matrix(np.zeros((NPY,NW)))
     
     # Loop over states (PermY x Wealth) and perform Monte Carlo Integration
     # of income innovations to fill in utility(state) matrix
@@ -72,17 +72,17 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
                     UtilSum += ComputeOptimalC(Person,
                                                ipy,
                                                iw,
-                                               -1,
+                                               year,
                                                RealRate,
                                                RandomY[ir]*sign,
                                                FinalPeriodUtilityVector,
                                                )               
             # Average Utility over all Monte-Carlo draws (2*NumberYDraws)
             # and store in CPU matrix
-            CurrentPeriodUtility[ipy,iw] = .5 * UtilSum / NumberYDraws
+            CurrentPeriodUMat[ipy,iw] = .5 * UtilSum / NumberYDraws
         
         # Set lastPeriodUtility equal to Current Period Utility for next iter
-        NextPeriodUtility=CurrentPeriodUtility
+        NextPeriodUMat = CurrentPeriodUMat
             
     # Now loop backwards over lifetime to get to current period
     for year in range(Person.RetirementAge - 2,Person.Age,-1):   
@@ -108,14 +108,14 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
                                                    year,
                                                    RealRate,
                                                    RandomY[ir]*sign,
-                                                   NextPeriodUtility,
+                                                   NextPeriodUMat,
                                                    )
                 # Average Utility over all Monte-Carlo draws (2^NumberYDraws)
                 # and store in CPU matrix
-                CurrentPeriodUtility[ipy,iw] = .5 * UtilSum / NumberYDraws
+                CurrentPeriodUMat[ipy,iw] = .5 * UtilSum / NumberYDraws
                 
         # Set lastPeriodUtility equal to Current Period Utility for next iter
-        NextPeriodUtility = CurrentPeriodUtility
+        NextPeriodUMat = CurrentPeriodUMat
                 
     # Now compute consumption for current year
     OptC,LEU = ComputeOptimalC(Person,RealRate,0,NextPeriodUtility,YearFlag)
