@@ -96,10 +96,6 @@ class People:
                                                 RetirementAge
                                                 )
         
-        # Next call function to create 3D array of transition probabilities.
- 
-        self.TransMat
-        
         # Finally call function to compute matrix of possible values of 
         #  wealth in each remaining period of life
         self.WealthMat = ComputeWealthValues(

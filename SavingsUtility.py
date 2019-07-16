@@ -85,7 +85,7 @@ def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
         # Computation for marginal utility during last working year where
         # future permanent income no longer matters so no need to loop
         MarginalUtility = (NextPeriodUtility[indexNextWealth +1 ]
-                          + NextPeriodUtility[indexNextWealth])/DollarDif
+                          - NextPeriodUtility[indexNextWealth])/DollarDif
         
     return(MarginalUtility)
         

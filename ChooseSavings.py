@@ -108,7 +108,7 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
                                                    year,
                                                    RealRate,
                                                    RandomY[ir]*sign,
-                                                   NextPeriodUMat,
+                                                   NextPeriodUMat
                                                    )
                 # Average Utility over all Monte-Carlo draws (2^NumberYDraws)
                 # and store in CPU matrix
