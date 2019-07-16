@@ -37,20 +37,14 @@ def ComputeWealthValues(IncomeMatrix, StartingWealth, YearsLeft,K,RealRate):
     # value in each period to the median and then computes the  the other
     # values as an exponential function centered at the median value
     if IncomeMatrix.shape[0] % 2 == 1:
-        print("wrong place")
         MedIndex = IncomeMatrix.shape[0] / 2 - .5
-        MeanInc = np.mean(IncomeMatrix[MedIndex,:])
+        MeanInc = np.mean(IncomeMatrix[MedIndex, :])
     else:
-        print("right place")
-        MedIndex=np.int(IncomeMatrix.shape[0] / 2) 
-        MeanInc=np.mean(IncomeMatrix[MedIndex-1:MedIndex+1,:])
-    
-    print(np.mean(IncomeMatrix[MedIndex-1:MedIndex+1,:]))
-    print(IncomeMatrix.shape[0])
-    print(MeanInc)
-   
+        MedIndex = np.int(IncomeMatrix.shape[0] / 2)
+        MeanInc = np.mean(IncomeMatrix[MedIndex - 1:MedIndex + 1, :])
+        
     # Create numpy matrix to store results (K is a global variable)    
-    WealthMat=np.matrix(np.zeros((K,YearsLeft)))
+    WealthMat = np.matrix(np.zeros((K, YearsLeft)))
     
     # Compute the index of the row(s) to place the optimal value in
     if K % 2 == 1:
@@ -59,14 +53,21 @@ def ComputeWealthValues(IncomeMatrix, StartingWealth, YearsLeft,K,RealRate):
         OptIndex = K / 2
     
     # Loop over years left in life
-    for year in range(YearsLeft): 
+    for year in range(YearsLeft):
         # Compute wealth assuming a savings rate of .16 RealRate is global
         OptW = MeanInc * .16 * (np.exp(RealRate * year) - 1) / RealRate
         
         for j in range(K):
             Increment = OptW / (OptIndex - 2)
-            WealthMat[j,year] = (j - 1) * Increment 
-    
+            WealthMat[j, year] = (j - 1) * Increment
+            
+    # For final year all values must be positive.
+        index = np.argmin(WealthMat[:, -1])
+        if WealthMat[index, -1] <= 0:
+            for i in range(K):
+                WealthMat[i, -1] = (WealthMat[i, -1] + 12000 
+                                 - WealthMat[index, -1])
+            
     return(WealthMat)
             
         

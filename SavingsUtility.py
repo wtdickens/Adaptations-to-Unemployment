@@ -68,7 +68,7 @@ def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
     
     # If computation is for other than last year of working life 
     # NextPeriodUility will be a matrix rather than a vector
-    if len(NextPeriodUtility.shape) > 1: 
+    if NextPeriodUtility.shape[1] > 1: 
         # Computations for other than last year of working life
         
         # Loop over possible values for permanent income in next period
@@ -77,8 +77,8 @@ def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
         MUSum = 0
         for i in range(Person.PermYMat.shape[0]):
             MUSum += (Person.TransMat[ipy,i,year] 
-                    * (NextPeriodUtility[indextNetWealth + 1,year]
-                    - NextPeriodUtility[indexNetWealth,year]))
+                    * (NextPeriodUtility[ipy,indexNextWealth + 1]
+                    - NextPeriodUtility[ipy,indexNextWealth]))
         MarginalUtility = MUSum / DollarDif
         
     else: 

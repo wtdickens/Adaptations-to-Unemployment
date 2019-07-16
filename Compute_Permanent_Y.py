@@ -46,14 +46,14 @@ def CompPermY(age,ed,experience,unemployment,sex,Y,RetirementAge):
     # For now this progrm creates a 2x(67-age) matrix with $60,000 in the upper
     # row and 0 in the lower row
     
-    PYMat=np.mat(np.zeros((2,RetirementAge - age)))
-    for i in range(RetirementAge - age):
+    PYMat = np.mat(np.zeros((2,RetirementAge - age + 1)))
+    for i in range(RetirementAge - age + 1):
         PYMat[1,i]=60000
         PYMat[0,i]=0
     
     # This creates teh transi
-    TransMat=np.zeros((2,2,RetirementAge - age))
-    for i in range(RetirementAge - age):
+    TransMat = np.zeros((2,2,RetirementAge - age + 1))
+    for i in range(RetirementAge - age + 1):
         TransMat[0,0,i]=.1
         TransMat[0,1,i]=.9
         TransMat[1,0,i]=.9

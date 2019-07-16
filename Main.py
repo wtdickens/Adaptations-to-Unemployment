@@ -101,7 +101,7 @@ class People:
         self.WealthMat = ComputeWealthValues(
                                              self.PermYMat,
                                              StartingWealth,
-                                             RetirementAge-age,
+                                             RetirementAge - age + 1,
                                              K,
                                              RealRate
                                              )
