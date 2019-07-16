@@ -7,8 +7,7 @@
 # IMPORTS
 import numpy as np
 from Compute_Permanent_Y import CompPermY as CompPermY
-from Compute_Wealth_Values import Compute_Wealth_Values 
-                            as    Compute_Wealth_Values
+from Compute_Wealth_Values import ComputeWealthValues as ComputeWealthValues
 
 # "Global" Variables (parameters of the simulation)
 
@@ -82,26 +81,34 @@ class People:
 
         
         # Now call function to create matrix of possible permanent income 
-        #   values in each period as an Nx(Retirement_Age-Age) matrix
-        self.PermYMat,self.PYTransMat = ComputePermY(self,
-                                                     self.age,
-                                                     self.education,
-                                                     self.experience,
-                                                     self.MonthsUnemployed,
-                                                     self.sex,
-                                                     self.FulltimeY,
-                                                     RetirementAge
-                                                     )
+        #   values in each period as an Nx(Retirement_Age-Age) matrix. 
+        # Same function also returns TransMat which is a 3D matrix
+        # Each slice is a Markov transition matrix with rows giving probability
+        # of transitioning from current state to the possible states in the
+        # next period. Each slice is for a different year.
+        self.PermYMat,self.TransMat = ComputePermY(self,
+                                                   self.age,
+                                                   self.education,
+                                                   self.experience,
+                                                   self.MonthsUnemployed,
+                                                   self.sex,
+                                                   self.FulltimeY,
+                                                   RetirementAge
+                                                   )
+        
+        # Next call function to create 3D array of transition probabilities.
+ 
+        self.TransMat
         
         # Finally call function to compute matrix of possible values of 
         #  wealth in each remaining period of life
-        self.WealthMat = Compute_Wealth_Values(self,
-                                               self.PermYMat,
-                                               StartingWealth,
-                                               RetirementAge-age,
-                                               K,
-                                               RealRate
-                                               )
+        self.WealthMat = ComputeWealthValues(self,
+                                             self.PermYMat,
+                                             StartingWealth,
+                                             RetirementAge-age,
+                                             K,
+                                             RealRate
+                                             )
             
 ###############################################################
 # Now test ChooseSavings.py

@@ -49,7 +49,7 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
     # as a matrix with dimensions equal to the number of permanent income
     # catagorie by the number of wealth catagories
     NPY = Person.PermYMat.shape[0]  # Number of permanent income states
-    NW = Person.WealthMat.shape][0] # Number of wealth states
+    NW = Person.WealthMat.shape[0] # Number of wealth states
     CurrentPeriodUMat = np.matrix(np.zeros((NPY,NW)))
     
     # Loop over states (PermY x Wealth) and perform Monte Carlo Integration
