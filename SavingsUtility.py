@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def SavingsUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
+def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
     """
     This routine computes the marginal utility of the next dollar of savings
     at a certain level of savings for a given year, and current wealth and 
@@ -52,7 +52,6 @@ def SavingsUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
 
     @author: wtdickens
     """
-    import numpy as np
     
     # The marginal dollar of savings simply increases the probability of 
     # obtaining the next highes savings state the marginal utility gain from

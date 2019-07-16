@@ -86,15 +86,15 @@ class People:
         # Each slice is a Markov transition matrix with rows giving probability
         # of transitioning from current state to the possible states in the
         # next period. Each slice is for a different year.
-        self.PermYMat,self.TransMat = ComputePermY(self,
-                                                   self.age,
-                                                   self.education,
-                                                   self.experience,
-                                                   self.MonthsUnemployed,
-                                                   self.sex,
-                                                   self.FulltimeY,
-                                                   RetirementAge
-                                                   )
+        self.PermYMat,self.TransMat = CompPermY(
+                                                self.age,
+                                                self.education,
+                                                self.experience,
+                                                self.MonthsUnemployed,
+                                                self.sex,
+                                                self.FulltimeY,
+                                                RetirementAge
+                                                )
         
         # Next call function to create 3D array of transition probabilities.
  
@@ -102,7 +102,7 @@ class People:
         
         # Finally call function to compute matrix of possible values of 
         #  wealth in each remaining period of life
-        self.WealthMat = ComputeWealthValues(self,
+        self.WealthMat = ComputeWealthValues(
                                              self.PermYMat,
                                              StartingWealth,
                                              RetirementAge-age,
@@ -117,7 +117,7 @@ from ChooseSavings import ChooseSavings as ChooseSavings
 
 person1=People()
 
-SavingsRate,Savings,ELifetimeUtility = ChooseSavings(Person1,
+SavingsRate,Savings,ELifetimeUtility = ChooseSavings(person1,
                                                      RealRate,
                                                      Years_of_Retirement,
                                                      NumberYDraws)

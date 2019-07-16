@@ -52,13 +52,13 @@ def CompPermY(age,ed,experience,unemployment,sex,Y,RetirementAge):
         PYMat[0,i]=0
     
     # This creates teh transi
-    PYTransMat=np.zeros((2,2,RetirementAge - age))
+    TransMat=np.zeros((2,2,RetirementAge - age))
     for i in range(RetirementAge - age):
-        PyTransMat[0,0,i]=.1
-        PyTransMat[0,1,i]=.9
-        PyTransMat[1,0,i]=.9
-        PyTransMat[1,1,i]=.1        
+        TransMat[0,0,i]=.1
+        TransMat[0,1,i]=.9
+        TransMat[1,0,i]=.9
+        TransMat[1,1,i]=.1        
     
-    return(PYMat,PYTransMat)
+    return(PYMat,TransMat)
         
 

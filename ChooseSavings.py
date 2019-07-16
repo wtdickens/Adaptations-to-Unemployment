@@ -38,7 +38,7 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
     @author: wtdickens
     """
     import numpy as np
-    from Period_T_Utililty import Period_T_Utility as Period_T_Utility
+    from Period_T_Utility import Period_T_Utility as Period_T_Utility
     from CompOptimalC import CompOptimalC as CompOptimalC
 
     # Call routine to compute the utility consumption in retirement 
@@ -69,14 +69,14 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
                 # that work well for exponential type distributions}
                 for sign in [-1,1]:
                     # Compute optimal consumption given state
-                    UtilSum += ComputeOptimalC(Person,
-                                               ipy,
-                                               iw,
-                                               year,
-                                               RealRate,
-                                               RandomY[ir]*sign,
-                                               FinalPeriodUtilityVector,
-                                               )               
+                    UtilSum += CompOptimalC(Person,
+                                            ipy,
+                                            iw,
+                                            Person.RetirementAge - Person.age,
+                                            RealRate,
+                                            RandomY[ir]*sign,
+                                            FinalPeriodUtilityVector,
+                                            )               
             # Average Utility over all Monte-Carlo draws (2*NumberYDraws)
             # and store in CPU matrix
             CurrentPeriodUMat[ipy,iw] = .5 * UtilSum / NumberYDraws

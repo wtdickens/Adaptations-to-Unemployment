@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-def Compute_Wealth_Values(IncomeMatrix, StartingWealth, YearsLeft,K,RealRate):
+def ComputeWealthValues(IncomeMatrix, StartingWealth, YearsLeft,K,RealRate):
     """
     This routine takes a person's starting wealth and their income matrix
     and computes possible values for wealth in each remaining year of their
