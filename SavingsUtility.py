@@ -20,6 +20,10 @@ def SavingsUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
            Each column lists the discrete value that wealth passed to the next
            period can take in ascending order. Each column contains the values
            for one year of the subjecs working life.
+       Person.PermYMat : numpy matrix
+           Each column lists possible values for permanent annual income
+           in asssending order. Each column corresponds to a different year
+           in the person's working life.
        Person.RetirementAge : integer
            Age of retirement for this person
        Person.Age : integer
@@ -60,9 +64,34 @@ def SavingsUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
     # permanent income state weighted by the probability of transitioning
     # to that state. Finally we divide the average by the dollar difference.
     
+    DollarDif = (Person.WealthMat[indexNextWealth + 1,year]
+                - Person.WealthMat[indexNextWealth,year])
+    
     # If computation is for other than last year of working life 
     # NextPeriodUility will be a matrix rather than a vector
     if len(NextPeriodUtility.shape) > 1: 
-        DollarDif=
+        # Computations for other than last year of working life
+        
+        # Loop over possible values for permanent income in next period
+        # to sum up weighed values of marginal utility at different levels
+        # of permanent income
+        MUSum = 0
+        for i in range(Person.PermYMat.shape[0]):
+            MUSum += (Person.TransMat[ipy,i,year] 
+                    * (NextPeriodUtility[indextNetWealth + 1,year]
+                    - NextPeriodUtility[indexNetWealth,year]))
+        MarginalUtility = MUSum / DollarDif
+        
+    else: 
+        # Computation for marginal utility during last working year where
+        # future permanent income no longer matters so no need to loop
+        MarginalUtility = (NextPeriodUtility[indexNextWealth +1 ]
+                          + NextPeriodUtility[indexNextWealth])/DollarDif
+        
+    return(MarginalUtility)
+        
+            
+            
+            
     
     
