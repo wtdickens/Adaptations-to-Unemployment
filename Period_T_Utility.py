@@ -33,7 +33,7 @@ def Period_T_Utility(Person,Years_of_Retirement):
         Utility_Vector[i,0]= (Years_of_Retirement*((Person.WealthMat[i,-1]
                             /Years_of_Retirement)**(1-Person.crra)-1)
                             /(1-Person.crra))
-    np.set_printoptions(precision=5)
+    
     return(Utility_Vector)
         
     

@@ -85,7 +85,7 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
         NextPeriodUMat = CurrentPeriodUMat
             
     # Now loop backwards over lifetime to get to current period
-    for year in range(Person.RetirementAge - 2,Person.Age,-1):   
+    for year in range(Person.RetirementAge - 2,Person.age,-1):   
         for ipy in range(NPY):     # Loop over permanent income states
             for iw in range(NW):   # Loop over wealth states
                 # Draw random terms for integration over income innovation
@@ -102,10 +102,10 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
                     # that work well for exponential type distributions}
                     for sign in [-1,1]:
                         # Compute optimal consumption given state
-                        UtilSum += ComputeOptimalC(Person,
+                        UtilSum += CompOptimalC(Person,
                                                    ipy,
                                                    iw,
-                                                   year,
+                                                   year - Person.age,
                                                    RealRate,
                                                    RandomY[ir]*sign,
                                                    NextPeriodUMat

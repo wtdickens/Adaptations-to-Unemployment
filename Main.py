@@ -29,7 +29,7 @@ class People:
     # period of life. It also computes the Markov transition matrix
     # for the evolution of permanent income over the working life
     
-    def __init__(self,crra=25,education=12,sex="m",age=18,
+    def __init__(self,crra=2,education=12,sex="m",age=18,
                  experience=-9,MonthsUnemployed=0,StartingWealth=-9
                  ,FulltimeY=-9,Y=-9,YSD=.1,RetirementAge=67):
         

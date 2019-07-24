@@ -64,8 +64,10 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     
     # Define routine to compute marginal utility of given consumption
     def MarginalUtilityC(C,Eta):
-        print(C,Eta)
-        return(1/m.pow(C,Eta))
+        if C == 0:
+            return(float("inf"))
+        else:
+            return(1/m.pow(C,Eta))
     
     # Useful Constants
     NWealthStates = Person.WealthMat.shape[0] # Number of wealth states
@@ -74,6 +76,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     # Compute resources available for consumption:
     #   Wealth + investment earnings
     #   + Permanent income (1 + transient shock)   
+    print(iw,year)
     CurrentWealth = Person.WealthMat[iw,year] * (1 + RealRate)
     Resources = CurrentWealth + Person.PermYMat[ipy,year] * (1 + RandomY)
                 
@@ -89,6 +92,9 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     
     # Find next period wealth category just above current wealth
     indexNextWealth=np.argmax(Person.WealthMat[:,year] > CurrentWealth) + 1
+    # If it is the last category step index back one
+    if indexNextWealth >= Person.WealthMat.shape[0] - 1:
+        indexNextWealth =  Person.WealthMat.shape[0] - 2
     
     # Determine which direction to search for Expected Utility max by
     # comparing marginal utility of consumption vs. marginal utility
@@ -253,7 +259,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
         Utility += (NextPeriodUtility[indexNextWealth]
                     * (1 - ProbLower))
         if ProbLower > 0:
-                Utility += (NextPeriodUtililty[indexNextWealth-1]
+                Utility += (NextPeriodUtility[indexNextWealth-1]
                         * ProbLower)
         
 
