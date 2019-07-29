@@ -52,7 +52,6 @@ def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
 
     @author: wtdickens
     """
-    
     # The marginal dollar of savings simply increases the probability of 
     # obtaining the next highes savings state the marginal utility gain from
     # a dollar spent on savings is the difference in the total utility between

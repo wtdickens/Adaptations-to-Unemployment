@@ -61,7 +61,7 @@ class People:
             self.FulltimeY = 60000 * np.exp(.07 * (education - 12))
         else:
             self.FulltimeY = FulltimeY
-            
+                    
         if Y<0:
             self.Y = 60000 * np.exp(.07 * (education - 12))
         else:

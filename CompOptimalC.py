@@ -76,7 +76,6 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     # Compute resources available for consumption:
     #   Wealth + investment earnings
     #   + Permanent income (1 + transient shock)   
-    print(iw,year)
     CurrentWealth = Person.WealthMat[iw,year] * (1 + RealRate)
     Resources = CurrentWealth + Person.PermYMat[ipy,year] * (1 + RandomY)
                 
@@ -150,7 +149,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                 MaxFlag = True  # Since optimum was found set MaxFlag to True
                                 # and end the loop
 
-            indexNextWealth += 1                                
+            indexNextWealth += 1                              
             # If Marginal utility of consumption is still less than Marginal
             # Utility of Savings continue loop
             
@@ -219,7 +218,8 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                         Savings = Person.WealthMat[indexNextWealth, year]
                         ProbLower = 0
                     MaxFlag = True  
-                                            
+            
+            indexNextWealth -= 1                                     
             # If Marginal utility of consumption is still greater than Marginal
             # Utility of Savings (MaxFlag = False) continue loop
         ####  end While Loop ####
@@ -241,7 +241,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                 / ( 1 - Person.crra))
     # Now add in the expected utililty associated with each possible 
     # value for permanent income in the next period weighted by the 
-    # probability of transition to that value for the onne or two possible 
+    # probability of transition to that value for the one or two possible 
     # values of savings
     
     if NextPeriodUtility.shape[1] > 1:
@@ -250,7 +250,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                     * Person.TransMat[ipy,i,year]
                     * (1 - ProbLower))
             if ProbLower > 0:
-                Utility += (NextPeriodUtililty[i,indexNextWealth-1]
+                Utility += (NextPeriodUtility[i,indexNextWealth-1]
                         * Person.TransMat[ipy,i,year]
                         * ProbLower)
     # If last period of working life then Permanent Income doesn't matter.
