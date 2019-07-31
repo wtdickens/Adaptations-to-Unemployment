@@ -63,7 +63,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     
     # Define routine to compute marginal utility of given consumption
     def MarginalUtilityC(C,Eta):
-        if C == 0:
+        if C <= 0:
             return(float("inf"))
         else:
             return(1/m.pow(C,Eta))
@@ -78,6 +78,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     if WorkYear == 0:
         CurrentWealth = Person.StartingWealth
         Resources = CurrentWealth + Person.Y
+        print(CurrentWealth,Person.Y,Resources)  ##########################
     else:
         CurrentWealth = Person.WealthMat[iw,WorkYear] * (1 + RealRate)
         Resources = (CurrentWealth + Person.PermYMat[ipy,WorkYear] 
@@ -273,6 +274,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
         
 
     # If period is other than zero report Expected utility for state and end
+    print("Consumption in Year ",WorkYear," is ",Consumption)
     if WorkYear > 0:
         return(Utility)
     # Otherwise return consumption and utility

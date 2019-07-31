@@ -72,7 +72,7 @@ class People:
             #  of .16 which is optimal with no risk and RealRate of 2
             #  if people work for 50 years, are retired for 20 and can
             #  purchase a fair anuity on retirement
-            self.StartingWealth = (.16 * FulltimeY
+            self.StartingWealth = (.16 * self.FulltimeY
                                  * (np.exp(RealRate*(age - 18)) -1)
                                  / RealRate
                                  )
@@ -112,6 +112,9 @@ class People:
 from ChooseSavings import ChooseSavings as ChooseSavings
 
 person1=People()
+
+print(person1.WealthMat)    ############################################
+raise Exception("stop")
 
 SavingsRate,Savings,ELifetimeUtility = ChooseSavings(person1,
                                                      RealRate,

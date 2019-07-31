@@ -52,7 +52,7 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
     @author: wtdickens
     """
     # The marginal dollar of savings simply increases the probability of 
-    # obtaining the next highes savings state the marginal utility gain from
+    # obtaining the next higher savings state. The marginal utility gain from
     # a dollar spent on savings is the difference in the total utility between
     # the lower and higher level divided by the dollar difference between
     # savings at those two levels. Thus we first compute the dollar difference
@@ -63,6 +63,11 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
     
     DollarDif = (Person.WealthMat[indexNextWealth + 1,WorkYear]
                 - Person.WealthMat[indexNextWealth,WorkYear])
+    if DollarDif == 0:
+        print(indexNextWealth,WorkYear,Person.WealthMat[indexNextWealth+1,
+                                                        WorkYear],
+        Person.WealthMat[indexNextWealth,WorkYear])
+        raise Exception("DollarDif can't equal zero")
     
     # If computation is for other than last year of working life 
     # NextPeriodUility will be a matrix rather than a vector
