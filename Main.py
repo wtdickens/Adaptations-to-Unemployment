@@ -118,6 +118,7 @@ SavingsRate,Savings,ELifetimeUtility = ChooseSavings(person1,
                                                      Years_of_Retirement,
                                                      NumberYDraws)
 
+print(Savings,SavingsRate,ELifetimeUtility)
         
         
         

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
+def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
     """
     This routine computes the marginal utility of the next dollar of savings
     at a certain level of savings for a given year, and current wealth and 
@@ -28,9 +28,8 @@ def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
            Age of retirement for this person
        Person.Age : integer
            Person's age in years
-    year : integer
-       Index of the year in the working life being analyzed. A -1 indicates
-       the last year before retimrement
+    WorkYear : integer
+       Index of the year in the working life being analyzed. 
     NextPeriodUtility : numpy matrix
        A Matrix containing the expected utility values associated with 
        each possible end state for the period being analyzed. When analyzing
@@ -62,8 +61,8 @@ def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
     # permanent income state weighted by the probability of transitioning
     # to that state. Finally we divide the average by the dollar difference.
     
-    DollarDif = (Person.WealthMat[indexNextWealth + 1,year]
-                - Person.WealthMat[indexNextWealth,year])
+    DollarDif = (Person.WealthMat[indexNextWealth + 1,WorkYear]
+                - Person.WealthMat[indexNextWealth,WorkYear])
     
     # If computation is for other than last year of working life 
     # NextPeriodUility will be a matrix rather than a vector
@@ -75,7 +74,7 @@ def SavingsMUtility(Person,year,NextPeriodUtility,indexNextWealth,ipy):
         # of permanent income
         MUSum = 0
         for i in range(Person.PermYMat.shape[0]):
-            MUSum += (Person.TransMat[ipy,i,year] 
+            MUSum += (Person.TransMat[ipy,i,WorkYear] 
                     * (NextPeriodUtility[ipy,indexNextWealth + 1]
                     - NextPeriodUtility[ipy,indexNextWealth]))
         MarginalUtility = MUSum / DollarDif

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
+def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     """
     The routine takes the utility by state matrix for the next year, and for 
     a specific level of resources available in the year being analyzed and
@@ -20,9 +20,8 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
        resources
     iw : integer
        Index for the wealth state to use in computing available resources
-    year : integer
-       Index of the year in the working life being analyzed. A -1 indicates
-       the last year before retimrement
+    WorkYear : integer
+       Index of the year in the working life being analyzed. 
     RealRate : floating point
        The real rate of return on savings during the person's life. If no 
        credit constraints this is also the expected interest on money 
@@ -76,8 +75,13 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     # Compute resources available for consumption:
     #   Wealth + investment earnings
     #   + Permanent income (1 + transient shock)   
-    CurrentWealth = Person.WealthMat[iw,year] * (1 + RealRate)
-    Resources = CurrentWealth + Person.PermYMat[ipy,year] * (1 + RandomY)
+    if WorkYear == 0:
+        CurrentWealth = Person.StartingWealth
+        Resources = CurrentWealth + Person.Y
+    else:
+        CurrentWealth = Person.WealthMat[iw,WorkYear] * (1 + RealRate)
+        Resources = (CurrentWealth + Person.PermYMat[ipy,WorkYear] 
+        * (1 + RandomY))
                 
     
     #######  Part I #######
@@ -90,7 +94,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     # likely to be close to the current level. 
     
     # Find next period wealth category just above current wealth
-    indexNextWealth=np.argmax(Person.WealthMat[:,year] > CurrentWealth) + 1
+    indexNextWealth=np.argmax(Person.WealthMat[:,WorkYear] > CurrentWealth) + 1
     # If it is the last category step index back one
     if indexNextWealth >= Person.WealthMat.shape[0] - 1:
         indexNextWealth =  Person.WealthMat.shape[0] - 2
@@ -98,9 +102,9 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     # Determine which direction to search for Expected Utility max by
     # comparing marginal utility of consumption vs. marginal utility
     # of savings at indexNextWealth
-    TestConsumption = Resources - Person.WealthMat[indexNextWealth,year]
+    TestConsumption = Resources - Person.WealthMat[indexNextWealth,WorkYear]
     MarginalUofSavings = SavingsMUtility(Person
-                                        ,year
+                                        ,WorkYear
                                         ,NextPeriodUtility
                                         ,indexNextWealth
                                         ,ipy)
@@ -113,9 +117,9 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
         while MaxFlag == False and indexNextWealth < NWealthStates - 1:
             LastMarginalUofSavings = MarginalUofSavings
             TestConsumption = (Resources 
-                               - Person.WealthMat[indexNextWealth, year])
+                               - Person.WealthMat[indexNextWealth, WorkYear])
             MarginalUofSavings = SavingsMUtility(Person
-                                                ,year
+                                                ,WorkYear
                                                 ,NextPeriodUtility
                                                 ,indexNextWealth
                                                 ,ipy)
@@ -137,13 +141,15 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                     # The notion is that the person is buying a fair lottery 
                     # between the two possible values of wealth.
                     ProbLower = ((Savings 
-                                - Person.WealthMat[indexNextWealth - 1, year])
-                                / (Person.WealthMat[indexNextWealth, year]
-                                - Person.WealthMat[indexNextWealth - 1, year]))
+                                - Person.WealthMat[indexNextWealth - 1, 
+                                                   WorkYear])
+                                / (Person.WealthMat[indexNextWealth, WorkYear]
+                                - Person.WealthMat[indexNextWealth - 1, 
+                                                   WorkYear]))
                 else:
                     # In this case Person will choose savings level 
                     # indexNextWealth
-                    Savings = Person.WealthMat[indexNextWealth, year]
+                    Savings = Person.WealthMat[indexNextWealth, WorkYear]
                     ProbLower = 0
             
                 MaxFlag = True  # Since optimum was found set MaxFlag to True
@@ -158,7 +164,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
         if MaxFlag == False:
             # In this case marginal utillity of consumption is still less than
             # Expected MU of savings. Set savings equal to maximum value
-            Savings = Person.WealthMat[-1, year]
+            Savings = Person.WealthMat[-1, WorkYear]
             ProbLower = 0
         
     else:
@@ -169,7 +175,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
         # Loop over wealth states less than starting value
         while MaxFlag == False and indexNextWealth >= 1:
             MarginalUofLowerSavings = SavingsMUtility(Person
-                                                     ,year
+                                                     ,WorkYear
                                                      ,NextPeriodUtility
                                                      ,indexNextWealth - 1
                                                      ,ipy)
@@ -177,7 +183,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                 < MarginalUofLowerSavings):
                 # If M Utility of consumption is less than marginal utility of 
                 # next lower value of savings then savings is set at this level
-                Savings = Person.WealthMat[indexNextWealth,year]
+                Savings = Person.WealthMat[indexNextWealth,WorkYear]
                 ProbLower = 0
                 MaxFlag = False
             else:
@@ -185,9 +191,10 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                 LastMarginalUofSavings = MarginalUofSavings
                 indexNextWealth -= 1
                 TestConsumption = (Resources 
-                                   - Person.WealthMat[indexNextWealth,year])
+                                   - Person.WealthMat[indexNextWealth,
+                                                      WorkYear])
                 MarginalUofSavings = SavingsMUtility(Person
-                                                    ,year
+                                                    ,WorkYear
                                                     ,NextPeriodUtility
                                                     ,indexNextWealth
                                                     ,ipy
@@ -209,13 +216,15 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
                         # The notion is that the person is buying a fair 
                         # lottery between the two possible values of wealth
                         ProbLower = ((Savings 
-                                - Person.WealthMat[indexNextWealth - 1, year])
-                                / (Person.WealthMat[indexNextWealth, year]
-                                - Person.WealthMat[indexNextWealth - 1, year]))
+                                - Person.WealthMat[indexNextWealth - 1, 
+                                                   WorkYear])
+                                / (Person.WealthMat[indexNextWealth, WorkYear]
+                                - Person.WealthMat[indexNextWealth - 1, 
+                                                   WorkYear]))
                     else:
                         # In this case Person will choose savings level 
                         # indexNextWealth
-                        Savings = Person.WealthMat[indexNextWealth, year]
+                        Savings = Person.WealthMat[indexNextWealth, WorkYear]
                         ProbLower = 0
                     MaxFlag = True  
             
@@ -228,7 +237,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
             # In this case marginal utillity of consumption is still greater
             # than Expected MU of savings at minimum value of savings 
             # In that case set savings equal to minimum value
-            Savings = Person.WealthMat[0, year]
+            Savings = Person.WealthMat[0, WorkYear]
             ProbLower = 0
      
     ####### Part II #######
@@ -247,11 +256,11 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
     if NextPeriodUtility.shape[1] > 1:
         for i in range(NPY):
             Utility += (NextPeriodUtility[i,indexNextWealth]
-                    * Person.TransMat[ipy,i,year]
+                    * Person.TransMat[ipy,i,WorkYear]
                     * (1 - ProbLower))
             if ProbLower > 0:
                 Utility += (NextPeriodUtility[i,indexNextWealth-1]
-                        * Person.TransMat[ipy,i,year]
+                        * Person.TransMat[ipy,i,WorkYear]
                         * ProbLower)
     # If last period of working life then Permanent Income doesn't matter.
     # In that case add utility considering wealth state only. 
@@ -264,7 +273,7 @@ def CompOptimalC(Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility):
         
 
     # If period is other than zero report Expected utility for state and end
-    if year > 0:
+    if WorkYear > 0:
         return(Utility)
     # Otherwise return consumption and utility
     else:

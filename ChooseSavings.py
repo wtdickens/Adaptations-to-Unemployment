@@ -85,7 +85,8 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
         NextPeriodUMat = CurrentPeriodUMat
             
     # Now loop backwards over lifetime to get to current period
-    for year in range(Person.RetirementAge - 2,Person.age, -1):   
+    for year in range(Person.RetirementAge - 1, Person.age, -1): 
+        print("Computing savings for age: ", year )
         for ipy in range(NPY):     # Loop over permanent income states
             for iw in range(NW):   # Loop over wealth states
                 # Draw random terms for integration over income innovation
@@ -118,14 +119,13 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
         NextPeriodUMat = CurrentPeriodUMat
                 
     # Now compute consumption for current year
-    OptC,LEU = CompOptimalC(Person,ipy,iw,year,RealRate,0,NextPeriodUMat)
-    (Person,ipy,iw,year,RealRate,RandomY,NextPeriodUtility)
-    # Compute returns and finish    
+    OptC,LEU = CompOptimalC(Person,0,0,0,
+                            RealRate,0,NextPeriodUMat)
+    # Compute returns and finish    NEED LEU as second returnXXXXX
     # Total available resources                    
     Resources = Person.StartingWealth + Person.Y  
     Savings = Resources - OptC              
     SavingsRate = 1 - OptC / Resources
-    
     return(Savings,SavingsRate,LEU)
     
     
