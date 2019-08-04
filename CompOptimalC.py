@@ -78,12 +78,10 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     if WorkYear == 0:
         CurrentWealth = Person.StartingWealth
         Resources = CurrentWealth + Person.Y
-        print(CurrentWealth,Person.Y,Resources)  ##########################
     else:
         CurrentWealth = Person.WealthMat[iw,WorkYear] * (1 + RealRate)
         Resources = (CurrentWealth + Person.PermYMat[ipy,WorkYear] 
         * (1 + RandomY))
-                
     
     #######  Part I #######
     # The first part of this routime computes the optimal level of savings.
@@ -274,7 +272,8 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
         
 
     # If period is other than zero report Expected utility for state and end
-    print("Consumption in Year ",WorkYear," is ",Consumption)  ##########################
+    print("Consumption in Year ",WorkYear," is ",Consumption,"Out of ",
+          Resources," With Random =",RandomY)  ##########################
     if Consumption < 0:
         print(ipy,iw,Savings,Utility,np.where(Person.WealthMat == Savings))
         print(Person.WealthMat[4,WorkYear])
