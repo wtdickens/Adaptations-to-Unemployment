@@ -113,10 +113,7 @@ from ChooseSavings import ChooseSavings as ChooseSavings
 
 person1=People()
 
-print(person1.WealthMat)    ############################################
-raise Exception("stop")
-
-SavingsRate,Savings,ELifetimeUtility = ChooseSavings(person1,
+Savings,SavingsRate,ELifetimeUtility = ChooseSavings(person1,
                                                      RealRate,
                                                      Years_of_Retirement,
                                                      NumberYDraws)

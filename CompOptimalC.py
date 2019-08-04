@@ -274,7 +274,12 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
         
 
     # If period is other than zero report Expected utility for state and end
-    print("Consumption in Year ",WorkYear," is ",Consumption)
+    print("Consumption in Year ",WorkYear," is ",Consumption)  ##########################
+    if Consumption < 0:
+        print(ipy,iw,Savings,Utility,np.where(Person.WealthMat == Savings))
+        print(Person.WealthMat[4,WorkYear])
+        raise Exception("negative consumption")
+                
     if WorkYear > 0:
         return(Utility)
     # Otherwise return consumption and utility
