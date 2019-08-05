@@ -181,6 +181,8 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
             # Expected MU of savings. Set savings equal to maximum value
             TestConsumption = (Resources 
                                - Person.WealthMat[indexNextWealth, WorkYear])
+            if LastMarginalUofSavings 
+                    > MarginalUtilityC(TestConsumption, Person.crra):
             Savings = Person.WealthMat[-1, WorkYear]
             ProbLower = 0
         
