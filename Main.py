@@ -73,9 +73,9 @@ class People:
             #  if people work for 50 years, are retired for 20 and can
             #  purchase a fair anuity on retirement
             self.StartingWealth = (.16 * self.FulltimeY
-                                 * (np.exp(RealRate*(age - 18)) -1)
-                                 / RealRate
-                                 )
+                                   * (np.exp(RealRate*(age - 18)) -1)
+                                   / RealRate
+                                   )
         else:
             self.StartingWealth = StartingWealth
 

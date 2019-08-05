@@ -112,7 +112,7 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
                                                    NextPeriodUMat
                                                    )
                 # Average Utility over all Monte-Carlo draws (2^NumberYDraws)
-                # and store in CPU matrix
+                # and store in Current Period Utility matrix
                 CurrentPeriodUMat[ipy,iw] = .5 * UtilSum / NumberYDraws
                 
         # Set lastPeriodUtility equal to Current Period Utility for next iter

@@ -63,11 +63,6 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
     
     DollarDif = (Person.WealthMat[indexNextWealth + 1,WorkYear]
                 - Person.WealthMat[indexNextWealth,WorkYear])
-    if DollarDif == 0:
-        print(indexNextWealth,WorkYear,Person.WealthMat[indexNextWealth+1,
-                                                        WorkYear],
-        Person.WealthMat[indexNextWealth,WorkYear])
-        raise Exception("DollarDif can't equal zero")
     
     # If computation is for other than last year of working life 
     # NextPeriodUility will be a matrix rather than a vector
@@ -80,15 +75,15 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
         MUSum = 0
         for i in range(Person.PermYMat.shape[0]):
             MUSum += (Person.TransMat[ipy,i,WorkYear] 
-                    * (NextPeriodUtility[ipy,indexNextWealth + 1]
-                    - NextPeriodUtility[ipy,indexNextWealth]))
+                    * (NextPeriodUtility[i,indexNextWealth + 1]
+                    - NextPeriodUtility[i,indexNextWealth]))
         MarginalUtility = MUSum / DollarDif
         
     else: 
         # Computation for marginal utility during last working year where
         # future permanent income no longer matters so no need to loop
-        MarginalUtility = (NextPeriodUtility[indexNextWealth +1 ]
-                          - NextPeriodUtility[indexNextWealth])/DollarDif
+        MarginalUtility = (NextPeriodUtility[indexNextWealth + 1 ]
+                          - NextPeriodUtility[indexNextWealth]) / DollarDif
         
     return(MarginalUtility)
         

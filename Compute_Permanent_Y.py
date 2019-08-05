@@ -56,8 +56,8 @@ def CompPermY(age,ed,experience,unemployment,sex,Y,RetirementAge):
     for i in range(RetirementAge - age + 1):
         TransMat[0,0,i]=.1
         TransMat[0,1,i]=.9
-        TransMat[1,0,i]=.9
-        TransMat[1,1,i]=.1        
+        TransMat[1,0,i]=.1
+        TransMat[1,1,i]=.9       
     
     return(PYMat,TransMat)
         
