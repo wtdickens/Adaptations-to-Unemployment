@@ -270,57 +270,41 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     # result.
     # First compute the Utility of consumption in the current year
     Consumption = Resources - Savings
-    Utility = ((1 / m.pow(Consumption,(Person.crra - 1)) - 1) 
-                / ( 1 - Person.crra))
-    
-    # Now add in the expected utililty associated with each possible 
-    # value for permanent income in the next period weighted by the 
-    # probability of transition to that value for the one or two possible 
-    # values of savings    
+    Utility = ((1 / m.pow(Consumption, (Person.crra - 1)) - 1)
+               / (1 - Person.crra))
+
+    # Now add in the expected utililty associated with each possible
+    # value for permanent income in the next period weighted by the
+    # probability of transition to that value for the one or two possible
+    # values of savings
     if NextPeriodUtility.shape[1] > 1:
         for i in range(NPY):
-            Utility += (NextPeriodUtility[i,indexNextWealth]
-                    * Person.TransMat[ipy,i,WorkYear]
-                    * (1 - ProbLower))
+            Utility += (NextPeriodUtility[i, indexNextWealth]
+                        * Person.TransMat[ipy, i, WorkYear]
+                        * (1 - ProbLower))
             if ProbLower > 0:
-                Utility += (NextPeriodUtility[i,indexNextWealth-1]
-                        * Person.TransMat[ipy,i,WorkYear]
-                        * ProbLower)
+                Utility += (NextPeriodUtility[i, indexNextWealth-1]
+                            * Person.TransMat[ipy, i, WorkYear]
+                            * ProbLower)
     else:
         # If last period of working life then Permanent Income doesn't matter.
-        # In that case add utility considering wealth state only. 
+        # In that case add utility considering wealth state only.
         Utility += (NextPeriodUtility[indexNextWealth]
                     * (1 - ProbLower))
         if ProbLower > 0:
                 Utility += (NextPeriodUtility[indexNextWealth-1]
-                        * ProbLower)
-        
+                            * ProbLower)
 
     # If period is other than zero report Expected utility for state and end
-    print("Consumption in Year ",WorkYear," is ",Consumption,"Out of ",
-          Resources," With Random =",RandomY)  ##########################
+    print("Consumption in Year ", WorkYear, " is ", Consumption, "Out of ",
+          Resources, " With Random =", RandomY)  # #########################
     if Consumption < 0:
-        print(ipy,iw,Savings,Utility,np.where(Person.WealthMat == Savings))
-        print(Person.WealthMat[4,WorkYear])
+        print(ipy, iw, Savings, Utility, np.where(Person.WealthMat == Savings))
+        print(Person.WealthMat[4, WorkYear])
         raise Exception("negative consumption")
-                
+
     if WorkYear > 0:
         return(Utility)
     # Otherwise return consumption and utility
     else:
-        return(Consumption,Utility)
-        
-                   
-        
-    
-    
-                    
-                
-
-        
-    
-            
-    
-    
-    
-
+        return(Consumption, Utility)
