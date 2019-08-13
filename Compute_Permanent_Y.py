@@ -49,15 +49,21 @@ def CompPermY(age,ed,experience,unemployment,sex,Y,RetirementAge):
     PYMat = np.mat(np.zeros((2,RetirementAge - age + 1)))
     for i in range(RetirementAge - age + 1):
         PYMat[1,i]=60000
-        PYMat[0,i]=0
+        PYMat[0,i]=6000
+        
+    # Add average social security annual payout x 20 to last period income
+    PYMat[0,-1] += 16500 * 20
+    PYMat[1,-1] += 16500 * 20 
     
-    # This creates teh transi
+    # This creates the transition matrix
     TransMat = np.zeros((2,2,RetirementAge - age + 1))
     for i in range(RetirementAge - age + 1):
         TransMat[0,0,i]=.1
         TransMat[0,1,i]=.9
         TransMat[1,0,i]=.1
-        TransMat[1,1,i]=.9       
+        TransMat[1,1,i]=.9     
+        
+    
     
     return(PYMat,TransMat)
         
