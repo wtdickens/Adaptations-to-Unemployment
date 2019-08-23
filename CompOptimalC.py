@@ -237,6 +237,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
                        < MarginalUofSavings):
                     # If true, the maximum value of savings is a mixture of 
                     # this and next higher level of savings. 
+                    print(Person.crra,LastMarginalUofSavings)
                     Savings = (Resources 
                                  - 1 / m.pow(LastMarginalUofSavings, 
                                  (1 / Person.crra)))
