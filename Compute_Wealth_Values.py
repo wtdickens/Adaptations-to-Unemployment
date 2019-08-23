@@ -63,11 +63,7 @@ def ComputeWealthValues(IncomeMatrix, StartingWealth, YearsLeft,K,RealRate):
             else:                
                 Increment = OptW / (OptIndex - 2)
                 WealthMat[j, year] = j * Increment 
-    # For final year all values must be positive.
-    WMin = WealthMat[np.argmin(WealthMat[:, -1]),-1]
-    if WMin <= 0:
-         for i in range(K):
-             WealthMat[i, -1] += 3000 - WMin
+
              
     return(WealthMat)
             
