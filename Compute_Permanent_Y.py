@@ -49,7 +49,7 @@ def CompPermY(age,ed,experience,unemployment,sex,Y,RetirementAge):
     PYMat = np.mat(np.zeros((2,RetirementAge - age + 1)))
     for i in range(RetirementAge - age + 1):
         PYMat[1,i]=60000
-        PYMat[0,i]=0
+        PYMat[0,i]=3000
     
     # This creates teh transi
     TransMat = np.zeros((2,2,RetirementAge - age + 1))

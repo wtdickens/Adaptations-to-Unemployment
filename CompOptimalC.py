@@ -81,9 +81,8 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     else:
         CurrentWealth = Person.WealthMat[iw,WorkYear] * (1 + RealRate)
         Resources = (CurrentWealth + Person.PermYMat[ipy,WorkYear] 
-        * (1 + RandomY))
-    
-    #######  Part I #######
+        * np.exp(RandomY))
+    print("Here",Person.WealthMat[iw,WorkYear],Person.PermYMat[ipy,WorkYear]) #*****************
     # The first part of this routime computes the optimal level of savings.
     # Part II computes the expected utiliy associate with that choice.
     # Instead of starting the search for the optimal level of savings near
