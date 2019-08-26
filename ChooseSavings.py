@@ -85,8 +85,11 @@ def ChooseSavings(Person,RealRate,Years_of_Retirement,
         NextPeriodUMat = CurrentPeriodUMat
             
     # Now loop backwards over lifetime to get to current period
-    for year in range(Person.RetirementAge - 2,Person.age, -1):   
-        for ipy in range(NPY):     # Loop over permanent income states
+    print("here 88 ChooseSavings")
+    for year in range(Person.RetirementAge - 1, Person.age, -1):  
+        print("here 89 ChooseSavings")
+        for ipy in range(NPY):     # Loop over permanent income states 
+            print("here 91 ChooseSavings")
             for iw in range(NW):   # Loop over wealth states
                 # Draw random terms for integration over income innovation
                 # YSD is standard deviation of transient shocks to income
