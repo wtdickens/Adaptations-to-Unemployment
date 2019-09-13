@@ -270,6 +270,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     # result.
     # First compute the Utility of consumption in the current year
     Consumption = Resources - Savings
+    print(Consumption,Resources,Savings)  ###################################
     Utility = ((1 / m.pow(Consumption, (Person.crra - 1)) - 1)
                / (1 - Person.crra))
 
@@ -296,7 +297,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
                             * ProbLower)
 
     # If period is other than zero report Expected utility for state and end
-    print("Consumption in Year ", WorkYear, " is ", Consumption, "Out of ",
+    print("Consumption in Year (ipy,iw)", WorkYear,ipy,iw, " is ", Consumption, "Out of ",
           Resources, " With Random =", RandomY)  # #########################
     if Consumption < 0:
         print(ipy, iw, Savings, Utility, np.where(Person.WealthMat == Savings))

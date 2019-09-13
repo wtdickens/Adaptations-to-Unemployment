@@ -36,7 +36,7 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
        the final working year this is a numpy vector containing the utility 
        values associated with each final level of wealth.
     indexNextWealth : integer
-       The index of the wealth state for which the maringal utility is being
+       The index of the wealth state for which the marginal utility is being
        computed. 
     ipy : integer
        Index for the current permanent income state
@@ -44,7 +44,7 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
     Returns
     -------
     MarginalUtility : floating point
-       The expecred marginal utility of an extra dollar in savings in the 
+       The expected marginal utility of an extra dollar in savings in the 
        year being analyzed
        
     Created on Mon Jul 15 13:52:51 2019
