@@ -31,7 +31,7 @@ class People:
     
     def __init__(self,crra=2,education=12,sex="m",age=18,
                  experience=-9,MonthsUnemployed=0,StartingWealth=-9
-                 ,FulltimeY=-9,Y=-9,YSD=.1,RetirementAge=67):
+                 ,FulltimeY=-9,Y=-9,YSD=.1,RetirementAge=67,MinY=6000):
         
         # Create attributes for each incidence of the class
         #   crra is coefficient of relative risk aversion, 
@@ -40,6 +40,7 @@ class People:
         #   FulltimeY is the most recent full time annual income
         #   Y is income for most recent period
         #   YSD is the standard dev. of transient shocks to income in %/100
+        #   MinY is the minimum income the person can have
         #   others are self explanitory
         self.crra = crra
         self.education = education
@@ -48,6 +49,7 @@ class People:
         self.MonthsUnemployed = MonthsUnemployed
         self.YSD = YSD
         self.RetirementAge = RetirementAge
+        self.MinY = MinY
         
         if experience < 0:
             self.experience = age - education

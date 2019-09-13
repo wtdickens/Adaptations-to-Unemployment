@@ -82,7 +82,9 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
         CurrentWealth = Person.WealthMat[iw,WorkYear] * (1 + RealRate)
         Resources = (CurrentWealth + Person.PermYMat[ipy,WorkYear] 
         * np.exp(RandomY))
-    print("Here",Person.WealthMat[iw,WorkYear],Person.PermYMat[ipy,WorkYear]) #*****************
+        if Resources - CurrentWealth < Person.MinY:
+            Resources = Person.MinY + CurrentWealth
+   
     # The first part of this routime computes the optimal level of savings.
     # Part II computes the expected utiliy associate with that choice.
     # Instead of starting the search for the optimal level of savings near
@@ -103,8 +105,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     # Determine which direction to search for Expected Utility max by
     # comparing marginal utility of consumption vs. marginal utility
     # of savings at indexNextWealth
-    TestConsumption = Resources - Person.WealthMat[indexNextWealth,WorkYear]
-    print(TestConsumption)           ########################################
+    TestConsumption = Resources - Person.WealthMat[indexNextWealth,WorkYear] 
     MarginalUofSavings = SavingsMUtility(Person
                                         ,WorkYear
                                         ,NextPeriodUtility
@@ -124,7 +125,9 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
         MaxFlag = False   # Set flag that indicates utility max not found
         # Loop over wealth states greater than starting value
 
-        print("MargUC < MargUofS",TestConsumption,MarginalUtilityC(
+        print("MargUC < MargUofS \n",
+              "    TestConsumption ",TestConsumption,
+              "\n     Marginal Utility of Consumption ",MarginalUtilityC(
                 TestConsumption,Person.crra)) #############################################
         while MaxFlag == False and indexNextWealth < NWealthStates - 1:
             LastMarginalUofSavings = MarginalUofSavings
@@ -135,10 +138,8 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
                                                 ,NextPeriodUtility
                                                 ,indexNextWealth
                                                 ,ipy)
-            print(MarginalUtilityC(TestConsumption, Person.crra),
-                  MarginalUofSavings,TestConsumption)#########################################
             if (MarginalUtilityC(TestConsumption, Person.crra)
-                       >= MarginalUofSavings):
+                 >= MarginalUofSavings):
                 # If true, the maximum value of savings is at this level 
                 # or is a mixture of this and next lower level of savings. 
                 # Determine which here.
@@ -237,7 +238,6 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
                        < MarginalUofSavings):
                     # If true, the maximum value of savings is a mixture of 
                     # this and next higher level of savings. 
-                    print(Person.crra,LastMarginalUofSavings)#####################
                     Savings = (Resources 
                                  - 1 / m.pow(LastMarginalUofSavings, 
                                  (1 / Person.crra)))
@@ -270,7 +270,8 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     # result.
     # First compute the Utility of consumption in the current year
     Consumption = Resources - Savings
-    print(Consumption,Resources,Savings)  ###################################
+    print("ipy,iw ",ipy,iw)
+    print("Consumption, Resources, Savings ",Consumption,Resources,Savings)  ###################################
     Utility = ((1 / m.pow(Consumption, (Person.crra - 1)) - 1)
                / (1 - Person.crra))
 
@@ -299,10 +300,11 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     # If period is other than zero report Expected utility for state and end
     print("Consumption in Year (ipy,iw)", WorkYear,ipy,iw, " is ", Consumption, "Out of ",
           Resources, " With Random =", RandomY)  # #########################
+    print("Wealth ",CurrentWealth," Perm Y ",Person.PermYMat[ipy,WorkYear])
     if Consumption < 0:
         print(ipy, iw, Savings, Utility, np.where(Person.WealthMat == Savings))
         print(Person.WealthMat[4, WorkYear])
-        raise Exception("negative consumption")
+        raise Exception("negative consumption in CompOptimalC")
 
     if WorkYear > 0:
         return(Utility)
