@@ -211,6 +211,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
         # or lower. 
         
         print("MargUC >= MargUofS") #############################################
+        print("index of wealth ",indexNextWealth)
         MaxFlag = False   # Set flag that indicates utility max not found
         # Loop over wealth states less than starting value
         while MaxFlag == False and indexNextWealth >= 1:
@@ -219,6 +220,10 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
                                                      ,NextPeriodUtility
                                                      ,indexNextWealth - 1
                                                      ,ipy)
+            print("MU lower savings",MarginalUofLowerSavings)####################
+            print("Test C, MU C, Resources",TestConsumption, 
+                  MarginalUtilityC(TestConsumption,Person.crra), 
+                  Resources-TestConsumption)
             if (MarginalUtilityC(TestConsumption,Person.crra)
                 < MarginalUofLowerSavings):
                 # If M Utility of consumption is less than marginal utility of 
