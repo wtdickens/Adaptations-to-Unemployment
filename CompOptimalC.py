@@ -111,6 +111,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
                                         ,NextPeriodUtility
                                         ,indexNextWealth
                                         ,ipy)
+    print("Marginal Utility of Savings:",MarginalUofSavings)  ###########################
     if MarginalUtilityC(TestConsumption,Person.crra) < MarginalUofSavings:
         # If true search forward to higher levels of savings and lower levels
         # of consumption. Person.crra is coef of relative risk aversion.

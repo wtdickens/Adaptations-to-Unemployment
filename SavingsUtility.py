@@ -61,8 +61,8 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
     # permanent income state weighted by the probability of transitioning
     # to that state. Finally we divide the average by the dollar difference.
     
-    DollarDif = (Person.WealthMat[indexNextWealth + 1,WorkYear]
-                - Person.WealthMat[indexNextWealth,WorkYear])
+    DollarDif = (Person.WealthMat[indexNextWealth + 1, WorkYear]
+                 - Person.WealthMat[indexNextWealth, WorkYear])
     
     # If computation is for other than last year of working life 
     # NextPeriodUility will be a matrix rather than a vector
@@ -74,9 +74,13 @@ def SavingsMUtility(Person,WorkYear,NextPeriodUtility,indexNextWealth,ipy):
         # of permanent income
         MUSum = 0
         for i in range(Person.PermYMat.shape[0]):
-            MUSum += (Person.TransMat[ipy,i,WorkYear] 
-                    * (NextPeriodUtility[i,indexNextWealth + 1]
-                    - NextPeriodUtility[i,indexNextWealth]))
+            MUSum += (Person.TransMat[ipy, i, WorkYear]
+                      * (NextPeriodUtility[i, indexNextWealth + 1]
+                      - NextPeriodUtility[i, indexNextWealth]))
+            print("MUSum and DollarDif", MUSum, DollarDif)  ############################
+            print("NPU and NPU+1", NextPeriodUtility[i, indexNextWealth], 
+                  NextPeriodUtility[i, indexNextWealth + 1])
+            print("TransMat",Person.TransMat[ipy, i, WorkYear])
         MarginalUtility = MUSum / DollarDif
         
     else: 
