@@ -65,6 +65,7 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     def MarginalUtilityC(C,Eta):
         if C <= 0:
             return(float("inf"))
+            raise Exception(" We have a negative consumption value...")
         else:
             return(1/m.pow(C,Eta))
     
@@ -106,6 +107,11 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
     # comparing marginal utility of consumption vs. marginal utility
     # of savings at indexNextWealth
     TestConsumption = Resources - Person.WealthMat[indexNextWealth,WorkYear] 
+    # Consumption cannot be less than the minimum value for this person
+    #  if it is then set it to the minimum value
+    if TestConsumption < Person.MinY:
+        TestConsumption = Person.MinY    
+        
     MarginalUofSavings = SavingsMUtility(Person
                                         ,WorkYear
                                         ,NextPeriodUtility
@@ -134,6 +140,11 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
             LastMarginalUofSavings = MarginalUofSavings
             TestConsumption = (Resources 
                                - Person.WealthMat[indexNextWealth, WorkYear])
+            # Consumption cannot be less than the minimum value for this person
+            #  if it is then set it to the minimum value
+            if TestConsumption < Person.MinY:
+                TestConsumption = Person.MinY    
+        
             MarginalUofSavings = SavingsMUtility(Person
                                                 ,WorkYear
                                                 ,NextPeriodUtility
@@ -183,7 +194,11 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
             # In this case savings is either at its highest level or between 
             # the highest and next highes level
             TestConsumption = (Resources 
-                               - Person.WealthMat[indexNextWealth, WorkYear])
+                               - Person.WealthMat[indexNextWealth, WorkYear])            
+            # Consumption cannot be less than the minimum value for this person
+            #  if it is then set it to the minimum value
+            if TestConsumption < Person.MinY:
+                TestConsumption = Person.MinY    
             if  0 <= MarginalUtilityC(TestConsumption, Person.crra):
                 # Compue savings by setting MU of last savings level to
                 # MU of consumption
@@ -238,7 +253,11 @@ def CompOptimalC(Person,ipy,iw,WorkYear,RealRate,RandomY,NextPeriodUtility):
                 indexNextWealth -= 1
                 TestConsumption = (Resources 
                                    - Person.WealthMat[indexNextWealth,
-                                                      WorkYear])
+                                                      WorkYear])            
+                # Consumption cannot be less than the minimum value for this person
+                #  if it is then set it to the minimum value
+                if TestConsumption < Person.MinY:
+                    TestConsumption = Person.MinY    
                 MarginalUofSavings = MarginalUofLowerSavings
                 if (MarginalUtilityC(TestConsumption,Person.crra)
                        < MarginalUofSavings):
